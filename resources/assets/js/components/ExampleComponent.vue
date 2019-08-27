@@ -3,17 +3,19 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
-                    <div class="card-header" active-class="active">Example Component</div>
+                    <!-- <div class="card-header" active-class="active">Example Component</div> -->
 
                     
                     <div class="card-header" >
                     <router-link to="/user" >
-                    User
+                        <div class="text-center">
+                        <h4> Login </h4>
+                        </div>
                     </router-link>
                     </div>
 
                     <div class="card-body">
-                        I'm an example component.
+                        Login to your Account
 
                         <form autocomplete="off" @submit.prevent="login" method="post">
                             <div class="form-group">
@@ -24,7 +26,7 @@
                                 <label for="password">password</label>
                                 <input type="password" id="password" class="form-control" v-model="password" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Login</button>
                         </form>
                     </div>
 

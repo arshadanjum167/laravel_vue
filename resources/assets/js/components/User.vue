@@ -5,21 +5,28 @@
                 <div class="card card-default">
                     <div class="card-header" >
                          <router-link to="/" >
-                        Example Component
+                        User Detail
                         </router-link>
                         </div>
 
                     <!-- <div class="card-body">
                         I'm an example component.
                     </div> -->
-                    <div class="card-header" active-class="active">
+                    <!-- <div class="card-header" active-class="active">
                     User
-                    </div>
+                    </div> -->
 
                     <div class="card-body">
-                        I'm an User component.
+                        <div class="raw">
+                            <div class="col-md-8">
+                                <p>Welcome : {{ name }},</br>
+                                    Your email id is {{ email }}
+                                </p>
+                            </div>
+                        </div>  
+                        <button type="submit" @click="logout()" class="btn btn-primary btn-block btn-lg">Logout</button>
                     </div>
-                    <button type="button" @click="logout()" class="btn btn-primary">Logout</button>
+                    
                 </div>
             </div>
         </div>
@@ -29,8 +36,18 @@
 <script>
 import { API_BASE_URL } from '../const.js'
     export default {
+        data() {
+            return {
+                name: null,
+                email:null
+                
+            }
+        },
         mounted() {
             console.log('Component mounted.')
+            let data=JSON.parse(localStorage.getItem('userdata'));
+            this.name=data.user.name;
+            this.email=data.user.email;
         },
         methods: {
             logout() {

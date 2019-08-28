@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="raw">
                             <div class="col-md-8">
-                                <p>Welcome : {{ name }},</br>
+                                <p>Welcome : {{ name }} , <br>
                                     Your email id is {{ email }}
                                 </p>
                             </div>

@@ -28,58 +28,69 @@ Vue.use( CxltToastr,toastrConfigs)
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue'));
 const routes = [
-    { path: '/', component: require('./components/ExampleComponent.vue') },
-    { path: '/user', component: require('./components/User.vue') },
-    { path: '/404', component: require('./components/Notfound.vue') }
+    { 
+      path: '/', 
+      component: require('./components/ExampleComponent.vue'),
+      beforeEnter: function(to, from, next) {
+        checkAuth(to, from, next);
+    }
+    },
+    { 
+      path: '/user',
+      component: require('./components/User.vue')
+    },
+    { 
+      path: '/404',
+      component: require('./components/Notfound.vue')
+    }
   ]
 
 const router = new VueRouter({
     routes 
   })
 
-router.beforeEach((to, from, next) => {
-    // redirect to login page if not logged in and trying to access a restricted page
+ router.beforeEach((to, from, next) => {
+//     // redirect to login page if not logged in and trying to access a restricted page
     
-    if(to.path!='/404')
-    {
+//     if(to.path!='/404')
+//     {
       
-      const token = localStorage.getItem('token');
-      if (!token) 
-      {
-        
-        if(!gettoken())
-        {
-          return next('/404');
-        }
-      }
+//       const token = localStorage.getItem('token');
+//       if (!token) 
+//       {
+//         if(!gettoken())
+//         {
+//           return next('/404');
+//         }
+//       }
       
-      if(token)
-      {
-        // debugger;
-        const userdata = localStorage.getItem('userdata');
-        if(userdata!='' && userdata!=null && userdata!=undefined)
-        {
-          if(to.path=="/")
-          {
-            return next('/user');  
-          }
-          else
-          {
-            return next();
-          }
-        }
-        else
-        {
-          if(to.path=="/user")
-          {
-            return next('/');
-          }
-        }
-      }
-    }
-   return next();
+//       if(token)
+//       {
+//         // debugger;
+//         const userdata = localStorage.getItem('userdata');
+//         if(userdata!='' && userdata!=null && userdata!=undefined)
+//         {
+//           if(to.path=="/")
+//           {
+//             return next('/user');  
+//           }
+//           else
+//           {
+//             return next();
+//           }
+//         }
+//         else
+//         {
+//           if(to.path=="/user")
+//           {
+//             return next('/');
+//           }
+//         }
+//       }
+//     }
+    return next();
     
-})
+ })
 
 async function gettoken()
 {
@@ -116,6 +127,44 @@ async function gettoken()
           return false;
           console.log('Error : '+e);
       }
+}
+
+async function checkAuth(to, from, next)
+{
+  
+    const token = localStorage.getItem('token');
+    if (!token) 
+    {
+      if(!gettoken())
+      {
+        return next('/404');
+      }
+    }
+
+    if(token)
+    {
+       
+      const userdata = localStorage.getItem('userdata');
+      if(userdata!='' && userdata!=null && userdata!=undefined)
+      {
+        if(to.path=="/")
+        {
+          return next('/user');  
+        }
+        else
+        {
+          return next();
+        }
+      }
+      else
+      {
+        if(to.path!="/")
+        {
+          return next('/');
+        }
+      }
+    }
+
 }
 // const app = new Vue({
 //     el: '#app'

@@ -510,7 +510,7 @@ module.exports = defaults;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API_BASE_URL; });
-var API_BASE_URL = 'http://192.168.1.106:8000/api/v1';
+var API_BASE_URL = document.location.origin + '/api/v1';
 
 /***/ }),
 /* 4 */
@@ -14357,6 +14357,75 @@ var gettoken = function () {
     return _ref.apply(this, arguments);
   };
 }();
+
+var checkAuth = function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(to, from, next) {
+    var token, userdata;
+    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            token = localStorage.getItem('token');
+
+            if (token) {
+              _context2.next = 4;
+              break;
+            }
+
+            if (gettoken()) {
+              _context2.next = 4;
+              break;
+            }
+
+            return _context2.abrupt('return', next('/404'));
+
+          case 4:
+            if (!token) {
+              _context2.next = 16;
+              break;
+            }
+
+            userdata = localStorage.getItem('userdata');
+
+            if (!(userdata != '' && userdata != null && userdata != undefined)) {
+              _context2.next = 14;
+              break;
+            }
+
+            if (!(to.path == "/")) {
+              _context2.next = 11;
+              break;
+            }
+
+            return _context2.abrupt('return', next('/user'));
+
+          case 11:
+            return _context2.abrupt('return', next());
+
+          case 12:
+            _context2.next = 16;
+            break;
+
+          case 14:
+            if (!(to.path != "/")) {
+              _context2.next = 16;
+              break;
+            }
+
+            return _context2.abrupt('return', next('/'));
+
+          case 16:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+
+  return function checkAuth(_x, _x2, _x3) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 // const app = new Vue({
 //     el: '#app'
 // });
@@ -14392,41 +14461,63 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_4_cxlt_vue2_toastr___default.a, toastrConfigs)
  */
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue'));
-var routes = [{ path: '/', component: __webpack_require__(46) }, { path: '/user', component: __webpack_require__(54) }, { path: '/404', component: __webpack_require__(57) }];
+var routes = [{
+  path: '/',
+  component: __webpack_require__(46),
+  beforeEnter: function beforeEnter(to, from, next) {
+    checkAuth(to, from, next);
+  }
+}, {
+  path: '/user',
+  component: __webpack_require__(54)
+}, {
+  path: '/404',
+  component: __webpack_require__(57)
+}];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
   routes: routes
 });
 
 router.beforeEach(function (to, from, next) {
-  // redirect to login page if not logged in and trying to access a restricted page
+  //     // redirect to login page if not logged in and trying to access a restricted page
 
-  if (to.path != '/404') {
+  //     if(to.path!='/404')
+  //     {
 
-    var token = localStorage.getItem('token');
-    if (!token) {
+  //       const token = localStorage.getItem('token');
+  //       if (!token) 
+  //       {
+  //         if(!gettoken())
+  //         {
+  //           return next('/404');
+  //         }
+  //       }
 
-      if (!gettoken()) {
-        return next('/404');
-      }
-    }
-
-    if (token) {
-      // debugger;
-      var userdata = localStorage.getItem('userdata');
-      if (userdata != '' && userdata != null && userdata != undefined) {
-        if (to.path == "/") {
-          return next('/user');
-        } else {
-          return next();
-        }
-      } else {
-        if (to.path == "/user") {
-          return next('/');
-        }
-      }
-    }
-  }
+  //       if(token)
+  //       {
+  //         // debugger;
+  //         const userdata = localStorage.getItem('userdata');
+  //         if(userdata!='' && userdata!=null && userdata!=undefined)
+  //         {
+  //           if(to.path=="/")
+  //           {
+  //             return next('/user');  
+  //           }
+  //           else
+  //           {
+  //             return next();
+  //           }
+  //         }
+  //         else
+  //         {
+  //           if(to.path=="/user")
+  //           {
+  //             return next('/');
+  //           }
+  //         }
+  //       }
+  //     }
   return next();
 });
 
@@ -53608,7 +53699,7 @@ var render = function() {
             _c("div", { staticClass: "raw" }, [
               _c("div", { staticClass: "col-md-8" }, [
                 _c("p", [
-                  _vm._v("Welcome : " + _vm._s(_vm.name) + ","),
+                  _vm._v("Welcome : " + _vm._s(_vm.name) + " , "),
                   _c("br"),
                   _vm._v(
                     "\n                                Your email id is " +

@@ -13,6 +13,12 @@ import axios from 'axios'
 import { API_BASE_URL } from './const.js'
 import CxltToastr from 'cxlt-vue2-toastr'
 
+// import * as Rx from 'rxjs';
+import VueRx from 'vue-rx'
+
+Vue.use(VueRx)
+
+
 Vue.use(VueRouter)
 var toastrConfigs = {
   position: 'top right',
@@ -32,16 +38,28 @@ const routes = [
       path: '/', 
       component: require('./components/ExampleComponent.vue'),
       beforeEnter: function(to, from, next) {
-        checkAuth(to, from, next);
-    }
+        const token = localStorage.getItem('token');
+        if (!token) 
+        {
+          gettoken();
+          
+        }
+        return next();
+      }
     },
     { 
       path: '/user',
-      component: require('./components/User.vue')
+      component: require('./components/User.vue'),
+      beforeEnter: function(to, from, next) {
+        checkAuth(to, from, next);
+      }
     },
     { 
       path: '/404',
-      component: require('./components/Notfound.vue')
+      component: require('./components/Notfound.vue'),
+      beforeEnter: function(to, from, next) {
+        checkAuth(to, from, next);
+      }
     }
   ]
 
@@ -133,6 +151,7 @@ async function checkAuth(to, from, next)
 {
   
     const token = localStorage.getItem('token');
+    
     if (!token) 
     {
       if(!gettoken())
@@ -147,6 +166,7 @@ async function checkAuth(to, from, next)
       const userdata = localStorage.getItem('userdata');
       if(userdata!='' && userdata!=null && userdata!=undefined)
       {
+        
         if(to.path=="/")
         {
           return next('/user');  
@@ -158,6 +178,7 @@ async function checkAuth(to, from, next)
       }
       else
       {
+        
         if(to.path!="/")
         {
           return next('/');

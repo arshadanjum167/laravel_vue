@@ -24,7 +24,8 @@
                                 </p>
                             </div>
                         </div>  
-                        <button type="submit" @click="logout()" class="btn btn-primary btn-block btn-lg">Logout</button>
+                        <!-- <button type="submit" @click="logout()" class="btn btn-primary btn-block btn-lg">Logout</button> -->
+                        <logout :token='tmp_token' @displayName='ChangeName'></logout>
                     </div>
                     
                 </div>
@@ -35,11 +36,14 @@
 
 <script>
 import { API_BASE_URL } from '../const.js'
+import Logout from './Logout.vue';
     export default {
+        components:{Logout},
         data() {
             return {
                 name: null,
-                email:null
+                email:null,
+                tmp_token:localStorage.getItem('token'),
                 
             }
         },
@@ -50,44 +54,9 @@ import { API_BASE_URL } from '../const.js'
             this.email=data.user.email;
         },
         methods: {
-            logout() {
-                var config = {
-                    headers: { 'Accept': 'application/json',
-                                'Authorization':'Bearer '+localStorage.getItem('token')},
-                    };
-                axios.post(API_BASE_URL + '/logout',"",config)
-                    .then(response => {
-                    //console.log(response);
-                    
-                    if(response.data!='')
-                    {
-                        const result=response.data;
-                        // console.log(result.success);
-                        if(result.success==1)
-                        {
-                            
-                            localStorage.removeItem("userdata")
-                            localStorage.removeItem("token")
-                            this.$toast.success({
-                                title:'Success',
-                                message:result.data.message
-                            })
-                            this.$router.push('/');
-                            
-                        }
-                        else
-                        {
-                            
-                            this.$toast.error({
-                                title:'Error',
-                                message:result.error[0]
-                            })
-                        }
-                    }
-                    
-                    }).catch(err => {
-                     console.log(err)
-                })
+            ChangeName(value)
+            {
+                this.name=this.name + ' ' + value;
             }
         }
     }

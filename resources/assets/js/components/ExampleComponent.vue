@@ -38,9 +38,12 @@
 </template>
 <style src="cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css"></style>
 <script>
+// import { Observable } from 'rxjs';
+
 import { API_BASE_URL } from '../const.js'
     export default {
          data() {
+             
             return {
                 email: null,
                 password: null,
@@ -48,9 +51,18 @@ import { API_BASE_URL } from '../const.js'
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            console.log('Login Component mounted.')
+            const token = localStorage.getItem('token');
+            
+            if (token) 
+            {
+                this.$router.push('user');
+            }
         },
 
+        // subscriptions:{
+        //      coundDown: 1
+        // },
 
         methods: {
         login() {

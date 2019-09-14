@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "cxlt-vue2-toastr": "^1.1.0",
-        "rxjs": "^6.5.2",
+        "rxjs": "^6.5.3",
         "rxjs-compat": "^6.5.2",
         "vue-router": "^3.1.2",
         "vue-rx": "^6.2.0",

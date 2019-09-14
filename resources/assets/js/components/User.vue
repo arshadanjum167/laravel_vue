@@ -8,7 +8,9 @@
                         User Detail
                         </router-link>
                         </div>
-
+                        <p>
+                            Count : {{ count }}
+                        </p>
                     <!-- <div class="card-body">
                         I'm an example component.
                     </div> -->
@@ -37,6 +39,10 @@
 <script>
 import { API_BASE_URL } from '../const.js'
 import Logout from './Logout.vue';
+import { Observable } from 'rxjs/Observable'
+import 'rxjs/add/observable/interval'
+import 'rxjs/add/operator/filter'
+
     export default {
         components:{Logout},
         data() {
@@ -44,7 +50,7 @@ import Logout from './Logout.vue';
                 name: null,
                 email:null,
                 tmp_token:localStorage.getItem('token'),
-                
+                count:0,
             }
         },
         mounted() {
@@ -58,6 +64,14 @@ import Logout from './Logout.vue';
             {
                 this.name=this.name + ' ' + value;
             }
+        },
+        created () {
+            const obs = Observable.interval(1000)
+            obs
+            .filter((value) => value % 2 == 0 )
+            .subscribe(
+                (value)=>this.count = value
+            )
         }
     }
 </script>
